@@ -1,6 +1,6 @@
 # Related List component based on LWC framework
 Test branch
-Test2 branch
+Test2b branch
 Lightning component for displaying a list of Salesforce records that are related to a parent record with a lookup or master-detail relationship.
 
 [Install the package](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t6F000003zIJvQAM)
