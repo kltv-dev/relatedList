@@ -3,14 +3,23 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import relatedListResource from '@salesforce/resourceUrl/relatedListResource';
 
-export default class RelatedListNewEditPopup extends LightningElement {
+export default class RelatedListFlowPopup extends LightningElement {
     showModal = false
     @api sobjectLabel
     @api sobjectApiName    
     @api recordId
     @api recordName
-		@api parentId
-		
+		@api flowName
+		@api flowParamsJSON
+
+    connectedCallback() {
+console.log("RelatedListFlowPopup connectedCallback");
+        document.addEventListener("flowstatuschange", (event) => {
+console.log("RelatedListFlowPopup flowstatuschange",event,JSON.stringify(event.detail));//.detail.flowStatus,JSON.stringify(detail.data.flowParams),event.detail.name,event.detail.flowName);
+						if (event.detail.flowStatus === "FINISHED") this.handleClose();
+        });
+    }
+
     @api show() {
         this.showModal = true;
     }
@@ -19,6 +28,10 @@ export default class RelatedListNewEditPopup extends LightningElement {
         this.showModal = false;
     }
     handleClose() {
+				const evt2 = new CustomEvent("refreshdata");
+console.log(evt2);
+        this.dispatchEvent(evt2);                  
+
         this.showModal = false;     
     }
     handleDialogClose(){
@@ -29,20 +42,13 @@ export default class RelatedListNewEditPopup extends LightningElement {
         return this.recordId == null
     }
     get header(){
-        return this.isNew() ? `New ${this.sobjectLabel}` : `Edit ${this.recordName}`
+        return `${this.flowName}`;//this.isNew() ? `New ${this.sobjectLabel}` : `Edit ${this.recordName}`
     }
 
     handleSave(){
-        this.template.querySelector('lightning-record-form').submit();
-    }
-		handleSubmit(event){
-console.log("handleSubmit");
-			 event.preventDefault();
-			 const fields = event.detail.fields;
-			 fields.AccountId = this.parentId;
-//console.log("fields",fields);
-			 this.template.querySelector('lightning-record-form').submit(fields);		 
-		}
+        //this.template.querySelector('lightning-record-form').submit();
+       
+    }    
     handleSuccess(event){
         this.hide()
         let name = this.recordName
@@ -61,10 +67,10 @@ console.log("handleSubmit");
             variant: "success"
         });
         this.dispatchEvent(evt);
-        this.dispatchEvent(new CustomEvent("refreshdata"));
+        this.dispatchEvent(new CustomEvent("refreshdata"));                  
     }    
 
     renderedCallback() {
-        loadStyle(this, relatedListResource + '/relatedListNewEditPopup.css')
+        //loadStyle(this, relatedListResource + '/relatedListFlowPopup.css')
     }         
 }

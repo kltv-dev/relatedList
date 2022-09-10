@@ -1,18 +1,24 @@
 <template>
     <template if:true={state.showRelatedList}>
+
         <c-related-list-new-edit-popup 
             onrefreshdata={handleRefreshData}>
-
         </c-related-list-new-edit-popup>
+
         <c-related-list-delete-popup
             onrefreshdata={handleRefreshData}>
-
         </c-related-list-delete-popup>
 
+        <c-related-list-flow-popup
+            onrefreshdata={handleRefreshData}>
+        </c-related-list-flow-popup>
+
         <lightning-layout class="slds-m-top_x-small">
-            <article class="slds-card lightning-card">
-                <div class="slds-card__header slds-grid slds-theme_shade">
-                  <header class="slds-media slds-media_center slds-has-flexi-truncate ">
+            <article class="xrelatedListCard slds-card lightning-card slds-card slds-card_boundary">
+                <div class="xslds-box">
+                <!--div class="slds-card__header slds-grid slds-theme_shade slds-page-header"-->
+                <div class="slds-page-header slds-page-header_joined slds-page-header_bleed slds-shrink-none slds-is-relative">
+                  <header class="slds-media slds-media_center slds-has-flexi-truncate slds-p-bottom--xx-small">
                     <div class="slds-media__figure">
                         <lightning-icon icon-name={state.iconName} size="small"></lightning-icon>
                     </div>
@@ -21,26 +27,130 @@
                         <a class="slds-card__header-link" onclick={handleGotoRelatedList}>{state.title}</a>
                       </h2>
                     </div>
-                    <div class="slds-no-flex">
-                        <lightning-button label="New" onclick={handleCreateRecord}></lightning-button>
-                    </div>
+                      <ul class="slds-button-group-list">
+                        <li>
+                            <template if:true={hasSearchFields}>
+							    <lightning-input name="list-search" placeholder={searchPlaceholder} variant="label-hidden" type="search" oncommit={handleCommit}></lightning-input>
+                            </template>
+                        </li>														
+                        <li>
+                            <lightning-button-icon icon-name="utility:refresh" size="medium" class="slds-m-left_xx-small" variant="border-filled" onclick={handleRefreshData}></lightning-button-icon>
+                        </li>
+                        </ul>
+                      <ul class="slds-button-group-list">
+                        <li>
+                            <lightning-button label="New" onclick={handleCreateRecord}></lightning-button>
+                        </li>
+                        </ul>
                   </header>
+                  <div class="slds-grid">
+                      <template if:true={hasRecords}>
+                          <div class="slds-col slds-align-bottom"><p class="slds-text-body--small">Showing {state.records.length} of {state.recordCount} item{statusItemPlural} • {state.sortedStatus}{state.filteredStatus}Updated at {state.dataFetchTime}</p></div>
+                      </template>
+                  </div>
                 </div>
-                <template if:true={hasRecords}>
-                    <div>
-                        <lightning-datatable class="related-list"
+
+                <div class="loadingDiv" if:true={hasRecords}>
+                    <template if:false={loaded}>
+						<lightning-spinner class="spinner" size="medium" variant="brand" alternative-text="Loading..."></lightning-spinner>
+					</template>
+										<template if:true={loaded}>
+					<template if:true={isDisplayTypeList}>
+                        <lightning-datatable class="xrelated-list"
                                             onrowaction={handleRowAction}
                                             columns={state.columns}
                                             data={state.records}
+                                            sorted-direction={state.sortedDirection}
+                                            sorted-by={state.sortedBy}
                                             key-field="Id"
-                                            hide-checkbox-column="true"
-                                            resize-column-disabled="true">
-                        </lightning-datatable>   
-                    </div>
+                                            hide-checkbox-column="false"
+											column-widths-mode="auto"
+											show-row-number-column
+											onloadmore={loadMoreData}>
+                        </lightning-datatable>
                     <footer class="slds-card__footer">
-                        <a onclick={handleGotoRelatedList}>View All</a>
-                    </footer>                            
-                </template>
+                        <a onclick={loadMoreData}>{loadMoreStatus}</a>
+												{loadMoreStatusDivider}
+                        <a onclick={handleGotoRelatedList}>{loadAllStatus}</a>
+                    </footer>
+                    </template>
+<!--lightning-record-form
+    record-id="006500000088mldAAA"
+    object-api-name="Opportunity"
+    columns="2"
+	  fields={xfields}
+    mode="readonly">
+</lightning-record-form-->
+            
+                <!--template for:each={state.records} for:item="rec">      
+                    <div key={rec.Id} class="slds-box xtest">  
+                        <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div style="display:inline;padding-left:2rem;">.</div><lightning-formatted-url class="xtextUnderline" key={rec.Id} label={rec.Name} value={rec.LinkName}></lightning-formatted-url>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">&nbsp;
+                                </div>
+                            </div>{rec.Id} - {state.sobjectApiName} - {state.fields} 
+                        <lightning-record-form record-id={rec.Id}   
+                                               object-api-name={state.sobjectApiName}   
+                                               fields={state.fields} 
+                                               mode="readonly" 
+																							 layout-type="Compact"
+                                               density="compact" 
+                                               columns="2">  
+                        </lightning-record-form>    
+                    </div>                        
+                </template-->
+										<template if:false={isDisplayTypeList}>
+										<template for:each={state.records} for:item="rec">    
+												<div key={rec.Id} class="slds-box">                         
+														<lightning-record-view-form record-id={rec.Id} object-api-name={state.sobjectApiName} density="compact">
+																<div class="slds-grid">
+																		<template if:true={isDisplayTypeCard2Col}>
+																		<div class="slds-col slds-size_1-of-2">
+																				<lightning-formatted-url class="textUnderline" key={rec.Id} label={rec.Name} value={rec.LinkName}></lightning-formatted-url>
+																				<template for:each={fieldsFormColumn1} for:item="field1">    
+																				<lightning-output-field field-name={field1} key={field1}></lightning-output-field>
+																				</template>
+																		</div>
+																		<div class="slds-col slds-size_1-of-2">
+																				<div class="slds-col slds-size_1-of-2">&nbsp;</div>
+																				<template for:each={fieldsFormColumn2} for:item="field2">
+																				<lightning-output-field field-name={field2} key={field2}></lightning-output-field>
+																				</template>
+																		</div>
+																		</template>
+																		<template if:true={isDisplayTypeCard1Col}>
+																		<div class="slds-col slds-size_1-of-1">
+																				<lightning-formatted-url class="textUnderline" key={rec.Id} label={rec.Name} value={rec.LinkName}></lightning-formatted-url>
+																				<template for:each={fieldsFormColumn1} for:item="field1">    
+																				<lightning-output-field field-name={field1} key={field1}></lightning-output-field>
+																				</template>
+																		</div>
+																		</template>
+																</div>
+														</lightning-record-view-form>
+												</div>
+										</template>
+										<footer class="slds-card__footer">
+                        <a onclick={loadMoreData}>{loadMoreStatus}</a>
+												{loadMoreStatusDivider}
+                        <a onclick={handleGotoRelatedList}>{loadAllStatus}</a>
+										</footer>
+										</template>
+								 		</template>
+                </div>
+            </div>   
+<!--
+                <lightning-record-form
+    record-id="001XXXXXXXXXXXXXXX"
+    object-api-name="Account"
+    layout-type="Compact"
+    columns="1"
+    mode="readonly"
+>
+</lightning-record-form>
+-->
               </article>                       
         </lightning-layout>
     </template>

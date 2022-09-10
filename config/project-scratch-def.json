@@ -1,5 +1,13 @@
 {
-  "orgName": "Demo company",
+  "orgName": "Related List Dev Scratch Org",
   "edition": "Developer",
+  "settings": {
+    "securitySettings": {
+       "sessionSettings":{
+          "sessionTimeout": "TwentyFourHours"
+       }  
+    }
+  },
+  "hasSampleData": true,
   "features": []
 }

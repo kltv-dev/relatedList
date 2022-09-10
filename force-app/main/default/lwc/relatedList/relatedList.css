@@ -1,0 +1,31 @@
+.textUnderline {
+    border-bottom: none;
+}
+.slds-form-element_horizontal {
+		margin: 0px !important;
+		padding: 1px !important;
+}
+.xtest .slds-border_bottom  {
+    border-top: 1px dotted !important;
+}
+.xtest a  {
+    border-top: 1px dotted !important;
+}
+.xTestCss {
+    background-color: red !important;
+}
+
+lightning-formatted-name {
+		border-bottom: 1px dotted;
+}
+
+.loadingDiv {
+    min-height: 60px;
+    position: relative;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.spinner {
+		margin: 30px;
+}

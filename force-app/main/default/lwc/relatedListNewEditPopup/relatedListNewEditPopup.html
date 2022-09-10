@@ -11,12 +11,15 @@
                                 columns="2"
                                 density="compact"
                                 mode="edit"
-                                onsuccess={handleSuccess}>
+																onsubmit={handleSubmit}
+                                onsuccess={handleSuccess}
+																oncancel={handleClose}>
                 </lightning-record-form>
             </slot>
-            <span slot="footer">
-                <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={handleClose} ></lightning-button>
-                <lightning-button variant="brand" label="Save" title="Save" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+						<span slot="footer">
+								<lightning-button label="spacer" class="visibility-hidden"></lightning-button>
+                <!--lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={handleClose} ></lightning-button>
+                <lightning-button variant="brand" label="Save" title="Save" onclick={handleSave} class="xslds-m-left_x-small"></lightning-button-->
             </span>
         </c-modal>
     </template>

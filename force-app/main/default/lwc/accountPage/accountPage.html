@@ -1,41 +1,126 @@
 <template>
-    <div class="slds-box slds-theme_shade">
-        <lightning-record-edit-form object-api-name="Contact">
-            <div class="slds-grid slds-p-left_x-small">
-                <div class="slds-col slds-size_1-of-3">
-                    <lightning-input-field field-name="AccountId" value={accountId} onchange={handleAccountIdChange}>
-                    </lightning-input-field>
-                </div>
-            </div>            
-        </lightning-record-edit-form>
-    </div>    
 
-    <c-related-list 
-        record-id={accountId}
-        sobject-api-name="Contact"
-        related-field-api-name="AccountId"
-        sorted-by="LastName, FirstName"
-        fields="Name, Title, Email, Phone"
-        columns={contactColumns}>
+  <div class="slds-box slds-theme_default">
+
+  <lightning-tabset>
+    <lightning-tab label="Related Lists for Account">
+      <lightning-record-edit-form object-api-name="Contact">
+        <div class="slds-grid slds-p-left_x-small">
+            <div class="slds-col slds-size_1-of-3">
+                <lightning-input-field field-name="AccountId" value={accountId} onchange={handleAccountIdChange}>
+                </lightning-input-field>
+            </div>
+        </div>            
+    </lightning-record-edit-form>
+
+<!--c-screen-flow width='100%' height='300' flow-name='a' name="a" flow-params={flowParamsJSON}></c-screen-flow-->
+
+<c-related-list 
+    record-id={accountId}
+    sobject-api-name="Asset"
+    related-field-api-name="AccountId"
+    sorted-by="Name"
+    search-fields="Name"
+    fields="Name,SerialNumber,Status">
+</c-related-list>
+<c-related-list 
+    record-id={accountId}
+    sobject-api-name="Contact"
+    number-of-records = 3
+    related-field-api-name="AccountId"
+    sorted-by="Name"
+    search-fields="Name"
+    fields="Name,Title,MobilePhone,Email,Phone">
+</c-related-list>
+<c-related-list 
+    record-id={accountId}
+    sobject-api-name="Opportunity"
+    number-of-records = 3
+    list-title = "Opportunities Closing Soon"
+    list-icon-name="standard:actions_and_buttons"
+    list-display-type="Card2Col"
+    related-field-api-name="AccountId"
+    sorted-by="CloseDate"
+    sorted-direction="DESC"
+    search-fields="Name"
+    fields="Name, StageName, Amount, CloseDate"
+    column-property-overrides={cpo}>
+</c-related-list>        
+<c-related-list 
+    record-id={accountId}
+    sobject-api-name="Case"
+    number-of-records = 3
+    list-title = "High Priority Cases"
+    list-icon-name="standard:incident"
+    list-display-type="Card1Col"
+    related-field-api-name="AccountId"
+    sorted-by="CaseNumber"
+    sorted-direction="DESC"
+    filter-field="Priority"
+    filter-operator="="
+    filter-value="High"
+    filter-type="String"
+    search-fields="CaseNumber"
+    fields="CaseNumber, Contact.Name, Priority, Subject"
+    custom-actions={customActions}
+    row-action-handler={customHandler}>
+</c-related-list> 
+    </lightning-tab>
+
+    <lightning-tab label="Lists for All Records (unrelated)" title="Lists of unrelated records (list view)">
+      <c-related-list 
+      sobject-api-name="Account"
+      number-of-records = 6
+      list-title = "All Highest Revenue Accounts"
+      list-icon-name="standard:lightning_usage"
+      list-display-type="List"
+      sorted-by="AnnualRevenue"
+      sorted-direction="DESC"
+      search-fields="Name"
+      fields="Name, Phone, Website, AnnualRevenue, SLAExpirationDate__c, CreatedDate">
     </c-related-list>
     <c-related-list 
-        record-id={accountId}
         sobject-api-name="Opportunity"
-        related-field-api-name="AccountId"
+        number-of-records = 6
+        list-title = "All Opportunities Closing Soon"
+        list-icon-name="standard:actions_and_buttons"
+        list-display-type="Card2Col"
         sorted-by="CloseDate"
         sorted-direction="DESC"
-        fields="Name, StageName, CloseDate, Amount"
-        columns={opptyColumns}>
-    </c-related-list>        
+        search-fields="Name"
+        fields="Name, StageName, Amount, CloseDate">
+    </c-related-list>
     <c-related-list 
-        record-id={accountId}
-        sobject-api-name="Case"
-        related-field-api-name="AccountId"
-        sorted-by="CaseNumber"
-        sorted-direction="DESC"
-        fields="CaseNumber, Contact.Name, Priority, Subject"
-        columns={caseColumns}
-        custom-actions={customActions}
-        row-action-handler={customHandler}>
-    </c-related-list> 
+      sobject-api-name="Case"
+      number-of-records = 6
+      list-title = "All High Priority Cases"
+      list-icon-name="standard:incident"
+      list-display-type="List"
+      sorted-by="CaseNumber"
+      sorted-direction="DESC"
+      filter-field="Priority"
+      filter-operator="="
+      filter-value="High"
+      filter-type="String"
+      search-fields="CaseNumber,Subject"
+      fields="CaseNumber, Account.Name, Contact.Name, Priority, Subject"
+      custom-actions={customActions}
+      row-action-handler={customHandler}>
+    </c-related-list>
+    </lightning-tab>
+
+    <lightning-tab label="Related Lists on Account Detail View">
+      <lightning-record-edit-form object-api-name="Contact">
+        <div class="slds-grid slds-p-left_x-small">
+            <div class="slds-col slds-size_1-of-3">
+                <lightning-input-field field-name="AccountId" value={accountId} onchange={handleGotoAccountIdChange}>
+                </lightning-input-field>
+            </div>
+        </div>            
+    </lightning-record-edit-form>
+    </lightning-tab>
+  </lightning-tabset>
+
+  </div>
+
 </template>

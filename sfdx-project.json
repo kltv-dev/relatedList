@@ -6,6 +6,13 @@
             "package": "Related List",
             "versionName": "ver 0.3",
             "versionNumber": "0.3.0.NEXT"
+        },
+        {
+            "path": "force-app",
+            "package": "Related List (kltv-dev)",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT",
+            "default": false
         }
     ],
     "namespace": "",
@@ -15,6 +22,11 @@
         "Related List": "0Ho6F000000XZxTSAW",
         "Related List@0.2.0.1": "04t6F000003zHCsQAM",
         "Related List@0.1.0-3": "04t6F000003zIJqQAM",
-        "Related List@0.3.0-1": "04t6F000003zIJvQAM"
+        "Related List@0.3.0-1": "04t6F000003zIJvQAM",
+        "Related List (kltv-dev)": "0Ho0I0000008OMlSAM",
+        "Related List@0.1.0.1 (kltv-dev)": "04t0I000000XdJXQA0",
+        "Related List@0.1.0.2 (kltv-dev)": "04t0I000000XdJcQAK",
+        "Related List@0.1.0.3 (kltv-dev)": "04t0I000000XdKQQA0",
+        "Related List@0.1.0.4 (kltv-dev)": "04t0I000000XdMCQA0"
     }
 }

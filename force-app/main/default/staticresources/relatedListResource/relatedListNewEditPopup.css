@@ -1,5 +1,9 @@
 div[class="slds-align_absolute-center slds-p-around_medium"]{
-	display:none;
+	left: 50%;
+    bottom: var(--lwc-squareIconLargeBoundaryAlt,5rem);
+    transform: translate(-50%, 0);
+    position: absolute;
+    margin-bottom: -0.5rem;
 }
 div[class="slds-is-relative record-form-spinner-holder"]{
 	padding-left: 2rem;
