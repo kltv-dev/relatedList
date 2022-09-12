@@ -50,16 +50,16 @@ In Launcher go to "Related List App":
 
 Related Lists for Account:
 
-![](Related Lists for Account.png)
+![](relatedListsForAccount.png)
 
 Lists for All Records (unrelated):
 
-![](Lists for All Records (unrelated).png)
+![](listsForAllRecords.png)
 
 Related Lists on Account Detail View:
 
-![](Related Lists on Account Detail View.png)
+![](relatedListsOnAccountDetailView.png)
 
 Related List View All:
 
-![](Related List View All.png)
+![](relatedListViewAll.png)
